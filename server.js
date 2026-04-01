@@ -1,13 +1,32 @@
 const express = require('express');
-const { keyboard, Key } = require('@nut-tree/nut-js');
+const { keyboard, Key } = require('@nut-tree-fork/nut-js');
+keyboard.config.autoDelayMs = 50;
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const crypto = require('crypto');
 
 const app = express();
 const PORT = process.env.DIYSTREAMDECK_PORT || 3000;
 
-// F13-F24 key mapping for nut-js
+// --- Auth token ---
+// Set DIYSTREAMDECK_TOKEN env var to require a token on all requests.
+// If not set, a random token is generated and printed at startup (copy it into your tablet URL).
+const AUTH_TOKEN = process.env.DIYSTREAMDECK_TOKEN || crypto.randomBytes(16).toString('hex');
+
+// --- Command allowlist for /text ---
+// Only these exact commands are permitted through the text endpoint.
+const ALLOWED_COMMANDS = new Set([
+  'tf thintraffic',
+  'tf slowtraffic',
+  'tf stoptraffic',
+  'tf clearvehicles',
+  'dv',
+  'bow',
+  'eow',
+]);
+
+// F-key map
 const F_KEY_MAP = {
   f13: Key.F13, f14: Key.F14, f15: Key.F15, f16: Key.F16,
   f17: Key.F17, f18: Key.F18, f19: Key.F19, f20: Key.F20,
@@ -18,15 +37,30 @@ const F_KEY_MAP = {
 };
 
 app.use(express.json());
+
+// --- Auth middleware ---
+function requireToken(req, res, next) {
+  // Allow token via query param (?token=...) or Authorization header (Bearer ...)
+  const queryToken = req.query.token;
+  const headerToken = (req.headers['authorization'] || '').replace(/^Bearer\s+/i, '');
+  const provided = queryToken || headerToken;
+
+  if (!provided || provided !== AUTH_TOKEN) {
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
+  next();
+}
+
+// Static files (tablet UI) — no auth needed for the page itself
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve buttons config to the frontend
+// Serve buttons config — no auth needed (not sensitive)
 app.get('/buttons.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'buttons.json'));
 });
 
-// POST /key — send a single keypress (e.g. f13)
-app.post('/key', async (req, res) => {
+// POST /key — send a single F-key press (auth required)
+app.post('/key', requireToken, async (req, res) => {
   const { key } = req.body;
   if (!key) return res.status(400).json({ error: 'key required' });
 
@@ -36,6 +70,7 @@ app.post('/key', async (req, res) => {
   try {
     await keyboard.pressKey(nutKey);
     await keyboard.releaseKey(nutKey);
+    console.log(`[key] ${key}`);
     res.json({ ok: true });
   } catch (err) {
     console.error('Key error:', err.message);
@@ -43,25 +78,25 @@ app.post('/key', async (req, res) => {
   }
 });
 
-// POST /text — open Marlin-CLI (F5), type command, press Enter
-app.post('/text', async (req, res) => {
+// POST /text — type a Marlin-CLI command (auth + allowlist required)
+app.post('/text', requireToken, async (req, res) => {
   const { command } = req.body;
   if (!command) return res.status(400).json({ error: 'command required' });
 
+  if (!ALLOWED_COMMANDS.has(command)) {
+    console.warn(`[text] Blocked disallowed command: ${command}`);
+    return res.status(403).json({ error: `Command not allowed: ${command}` });
+  }
+
   try {
-    // Open CLI
     await keyboard.pressKey(Key.F5);
     await keyboard.releaseKey(Key.F5);
     await new Promise(r => setTimeout(r, 200));
-
-    // Type command
     await keyboard.type(command);
     await new Promise(r => setTimeout(r, 200));
-
-    // Execute
     await keyboard.pressKey(Key.Return);
     await keyboard.releaseKey(Key.Return);
-
+    console.log(`[text] ${command}`);
     res.json({ ok: true });
   } catch (err) {
     console.error('Text error:', err.message);
@@ -69,7 +104,6 @@ app.post('/text', async (req, res) => {
   }
 });
 
-// Print local IP so user knows what to open on tablet
 function getLocalIP() {
   const interfaces = os.networkInterfaces();
   for (const iface of Object.values(interfaces)) {
@@ -85,6 +119,9 @@ function getLocalIP() {
 app.listen(PORT, () => {
   const ip = getLocalIP();
   console.log(`DIY Stream Deck running.`);
-  console.log(`Open on tablet: http://${ip}:${PORT}`);
-  console.log(`Local:          http://localhost:${PORT}`);
+  console.log(`Open on tablet: http://${ip}:${PORT}?token=${AUTH_TOKEN}`);
+  console.log(`Local:          http://localhost:${PORT}?token=${AUTH_TOKEN}`);
+  if (!process.env.DIYSTREAMDECK_TOKEN) {
+    console.log(`\n⚠  Token auto-generated (set DIYSTREAMDECK_TOKEN env var to make it permanent)`);
+  }
 });

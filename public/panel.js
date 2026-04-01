@@ -1,6 +1,9 @@
 let pages = [];
 let currentPage = 0;
 
+// Pick up token from URL query param (?token=...) so the tablet URL carries auth automatically
+const TOKEN = new URLSearchParams(window.location.search).get('token') || '';
+
 async function init() {
   const res = await fetch('/buttons.json');
   pages = await res.json();
@@ -45,7 +48,7 @@ async function fire(el, btn) {
     : { key: btn.key };
 
   try {
-    const res = await fetch(endpoint, {
+    const res = await fetch(`${endpoint}?token=${encodeURIComponent(TOKEN)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
