@@ -146,7 +146,9 @@ function getLocalIP() {
 
 app.listen(PORT, () => {
   const ip = getLocalIP();
+  const host = os.hostname();
   console.log(`DIY Stream Deck running.`);
-  console.log(`Open on tablet: http://${ip}:${PORT}?token=${TOKEN}`);
-  console.log(`Local:          http://localhost:${PORT}?token=${TOKEN}`);
+  console.log(`Open on tablet (hostname): http://${host}:${PORT}?token=${TOKEN}`);
+  console.log(`Open on tablet (IP):       http://${ip}:${PORT}?token=${TOKEN}`);
+  console.log(`Local:                     http://localhost:${PORT}?token=${TOKEN}`);
 });
