@@ -1,0 +1,13 @@
+{
+  "name": "diystreamdeck",
+  "version": "1.0.0",
+  "description": "Local web-based tablet control panel for LSPDFR / Marlin-CLI",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "@nut-tree/nut-js": "^4.2.2"
+  }
+}
