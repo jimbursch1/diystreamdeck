@@ -144,11 +144,22 @@ function getLocalIP() {
   return 'localhost';
 }
 
+const { execSync } = require('child_process');
+
 app.listen(PORT, () => {
   const ip = getLocalIP();
   const host = os.hostname();
+  const tabletUrl = `http://${ip}:${PORT}?token=${TOKEN}`;
   console.log(`DIY Stream Deck running.`);
   console.log(`Open on tablet (hostname): http://${host}:${PORT}?token=${TOKEN}`);
-  console.log(`Open on tablet (IP):       http://${ip}:${PORT}?token=${TOKEN}`);
+  console.log(`Open on tablet (IP):       ${tabletUrl}`);
   console.log(`Local:                     http://localhost:${PORT}?token=${TOKEN}`);
+
+  // Notify via OpenClaw/WhatsApp
+  try {
+    execSync(`openclaw system event --text "🎮 Stream Deck is running! Open on your phone: ${tabletUrl}" --mode now`);
+    console.log(`[notify] WhatsApp notification sent.`);
+  } catch (err) {
+    console.warn(`[notify] Could not send WhatsApp notification: ${err.message}`);
+  }
 });
