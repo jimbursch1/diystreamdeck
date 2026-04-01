@@ -1,11 +1,12 @@
 const express = require('express');
 const { keyboard, Key } = require('@nut-tree/nut-js');
-const fs = require('fs');
+const crypto = require('crypto');
 const path = require('path');
 const os = require('os');
 
 const app = express();
 const PORT = process.env.DIYSTREAMDECK_PORT || 3000;
+const TOKEN = process.env.DIYSTREAMDECK_TOKEN || crypto.randomBytes(16).toString('hex');
 
 // F13-F24 key mapping for nut-js
 const F_KEY_MAP = {
@@ -17,54 +18,95 @@ const F_KEY_MAP = {
   f9:  Key.F9,  f10: Key.F10, f11: Key.F11, f12: Key.F12,
 };
 
+// Allowlist of Marlin-CLI commands permitted via /text
+const COMMAND_ALLOWLIST = new Set([
+  'tf thintraffic',
+  'tf slowtraffic',
+  'tf stoptraffic',
+  'tf clearvehicles',
+  'dv',
+  'bow',
+  'eow',
+  'emote crossarms',
+  'emote surrender',
+  'emote laydown',
+  'emote sit',
+  'emote lean',
+  'emote coffee',
+  'emote notepad',
+  'emote text',
+  'emote wave',
+  'emote point',
+  'emote dance',
+  'emote salute',
+  'emote celebrate',
+  'emote facepalm',
+  'emote stop',
+]);
+
 app.use(express.json());
+
+// Auth middleware — checks ?token= or Authorization: Bearer
+function requireToken(req, res, next) {
+  const query = req.query.token;
+  const header = req.headers['authorization'];
+  const bearer = header && header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (query === TOKEN || bearer === TOKEN) return next();
+  res.status(401).json({ error: 'Unauthorized' });
+}
+
+// Static files served without auth (HTML/CSS/JS are not sensitive)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Serve buttons config to the frontend
+// Serve buttons config — no auth needed
 app.get('/buttons.json', (req, res) => {
   res.sendFile(path.join(__dirname, 'buttons.json'));
 });
 
 // POST /key — send a single keypress (e.g. f13)
-app.post('/key', async (req, res) => {
+app.post('/key', requireToken, async (req, res) => {
   const { key } = req.body;
   if (!key) return res.status(400).json({ error: 'key required' });
 
   const nutKey = F_KEY_MAP[key.toLowerCase()];
   if (!nutKey) return res.status(400).json({ error: `Unknown key: ${key}` });
 
+  console.log(`[key] ${key}`);
   try {
     await keyboard.pressKey(nutKey);
     await keyboard.releaseKey(nutKey);
     res.json({ ok: true });
   } catch (err) {
-    console.error('Key error:', err.message);
+    console.error(`[key] error: ${err.message}`);
     res.status(500).json({ error: err.message });
   }
 });
 
 // POST /text — open Marlin-CLI (F5), type command, press Enter
-app.post('/text', async (req, res) => {
+app.post('/text', requireToken, async (req, res) => {
   const { command } = req.body;
   if (!command) return res.status(400).json({ error: 'command required' });
 
+  if (!COMMAND_ALLOWLIST.has(command.trim().toLowerCase())) {
+    console.warn(`[text] blocked: ${command}`);
+    return res.status(403).json({ error: `Command not allowed: ${command}` });
+  }
+
+  console.log(`[text] ${command}`);
   try {
-    // Open CLI
     await keyboard.pressKey(Key.F5);
     await keyboard.releaseKey(Key.F5);
     await new Promise(r => setTimeout(r, 200));
 
-    // Type command
     await keyboard.type(command);
     await new Promise(r => setTimeout(r, 200));
 
-    // Execute
     await keyboard.pressKey(Key.Return);
     await keyboard.releaseKey(Key.Return);
 
     res.json({ ok: true });
   } catch (err) {
-    console.error('Text error:', err.message);
+    console.error(`[text] error: ${err.message}`);
     res.status(500).json({ error: err.message });
   }
 });
@@ -85,6 +127,6 @@ function getLocalIP() {
 app.listen(PORT, () => {
   const ip = getLocalIP();
   console.log(`DIY Stream Deck running.`);
-  console.log(`Open on tablet: http://${ip}:${PORT}`);
-  console.log(`Local:          http://localhost:${PORT}`);
+  console.log(`Open on tablet: http://${ip}:${PORT}?token=${TOKEN}`);
+  console.log(`Local:          http://localhost:${PORT}?token=${TOKEN}`);
 });

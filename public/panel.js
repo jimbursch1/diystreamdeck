@@ -1,5 +1,6 @@
 let pages = [];
 let currentPage = 0;
+const token = new URLSearchParams(window.location.search).get('token') || '';
 
 async function init() {
   const res = await fetch('/buttons.json');
@@ -47,7 +48,10 @@ async function fire(el, btn) {
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       body: JSON.stringify(body),
     });
     const data = await res.json();
