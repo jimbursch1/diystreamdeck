@@ -1,12 +1,32 @@
 const express = require('express');
-const { keyboard, Key } = require('@nut-tree/nut-js');
+const { keyboard, Key } = require('@nut-tree-fork/nut-js');
 const crypto = require('crypto');
+const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
 const app = express();
 const PORT = process.env.DIYSTREAMDECK_PORT || 3000;
-const TOKEN = process.env.DIYSTREAMDECK_TOKEN || crypto.randomBytes(16).toString('hex');
+
+// Persistent token — stored in config.json next to server.js
+// Priority: env var > config.json > generate new and save
+const CONFIG_PATH = path.join(__dirname, 'config.json');
+
+function loadOrCreateToken() {
+  if (process.env.DIYSTREAMDECK_TOKEN) return process.env.DIYSTREAMDECK_TOKEN;
+  if (fs.existsSync(CONFIG_PATH)) {
+    try {
+      const cfg = JSON.parse(fs.readFileSync(CONFIG_PATH, 'utf8'));
+      if (cfg.token) return cfg.token;
+    } catch {}
+  }
+  const token = crypto.randomBytes(16).toString('hex');
+  fs.writeFileSync(CONFIG_PATH, JSON.stringify({ token }, null, 2));
+  console.log(`⚡ New token generated and saved to config.json`);
+  return token;
+}
+
+const TOKEN = loadOrCreateToken();
 
 // F13-F24 key mapping for nut-js
 const F_KEY_MAP = {
