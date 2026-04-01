@@ -1,5 +1,5 @@
 const express = require('express');
-const { keyboard, Key } = require('@nut-tree/nut-js');
+const { keyboard, Key } = require('@nut-tree-fork/nut-js');
 const crypto = require('crypto');
 const path = require('path');
 const os = require('os');
