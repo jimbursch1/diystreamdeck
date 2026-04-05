@@ -131,20 +131,21 @@ app.post('/text', requireToken, async (req, res) => {
   }
 });
 
-// Print local IP so user knows what to open on tablet
+// Print local IP so user knows what to open on tablet.
+// Prefers Tailscale IP (100.x.x.x) if present — stable across DHCP changes.
 function getLocalIP() {
   const interfaces = os.networkInterfaces();
+  let fallback = null;
   for (const iface of Object.values(interfaces)) {
     for (const config of iface) {
-      if (config.family === 'IPv4' && !config.internal) {
-        return config.address;
-      }
+      if (config.family !== 'IPv4' || config.internal) continue;
+      // Tailscale range: 100.64.0.0/10
+      if (config.address.startsWith('100.')) return config.address;
+      if (!fallback) fallback = config.address;
     }
   }
-  return 'localhost';
+  return fallback || 'localhost';
 }
-
-const { execSync } = require('child_process');
 
 app.listen(PORT, () => {
   const ip = getLocalIP();
@@ -155,11 +156,4 @@ app.listen(PORT, () => {
   console.log(`Open on tablet (IP):       ${tabletUrl}`);
   console.log(`Local:                     http://localhost:${PORT}?token=${TOKEN}`);
 
-  // Notify via OpenClaw/WhatsApp
-  try {
-    execSync(`openclaw system event --text "🎮 Stream Deck is running! Open on your phone: ${tabletUrl}" --mode now`);
-    console.log(`[notify] WhatsApp notification sent.`);
-  } catch (err) {
-    console.warn(`[notify] Could not send WhatsApp notification: ${err.message}`);
-  }
 });
