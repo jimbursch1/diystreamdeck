@@ -38,7 +38,7 @@ const F_KEY_MAP = {
   f9:  Key.F9,  f10: Key.F10, f11: Key.F11, f12: Key.F12,
 };
 
-// Allowlist of Marlin-CLI commands permitted via /text
+// Allowlist of Marlin-CLI commands permitted via /text (F5)
 const COMMAND_ALLOWLIST = new Set([
   'tf thintraffic',
   'tf slowtraffic',
@@ -47,6 +47,10 @@ const COMMAND_ALLOWLIST = new Set([
   'dv',
   'bow',
   'eow',
+  'tp vespucci',
+  'w cop2',
+  'morning',
+  'spawn police',
   'emote crossarms',
   'emote surrender',
   'emote laydown',
@@ -62,6 +66,13 @@ const COMMAND_ALLOWLIST = new Set([
   'emote celebrate',
   'emote facepalm',
   'emote stop',
+]);
+
+// Allowlist of RPH console commands permitted via /console (F4)
+const CONSOLE_ALLOWLIST = new Set([
+  'ReloadAllPlugins',
+  'forceduty',
+  'spawn police2',
 ]);
 
 app.use(express.json());
@@ -127,6 +138,39 @@ app.post('/text', requireToken, async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     console.error(`[text] error: ${err.message}`);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /console — open RPH console (F4), type command, press Enter, close (F4)
+app.post('/console', requireToken, async (req, res) => {
+  const { command } = req.body;
+  if (!command) return res.status(400).json({ error: 'command required' });
+
+  if (!CONSOLE_ALLOWLIST.has(command.trim())) {
+    console.warn(`[console] blocked: ${command}`);
+    return res.status(403).json({ error: `Command not allowed: ${command}` });
+  }
+
+  console.log(`[console] ${command}`);
+  try {
+    await keyboard.pressKey(Key.F4);
+    await keyboard.releaseKey(Key.F4);
+    await new Promise(r => setTimeout(r, 200));
+
+    await keyboard.type(command);
+    await new Promise(r => setTimeout(r, 200));
+
+    await keyboard.pressKey(Key.Return);
+    await keyboard.releaseKey(Key.Return);
+    await new Promise(r => setTimeout(r, 200));
+
+    await keyboard.pressKey(Key.F4);
+    await keyboard.releaseKey(Key.F4);
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(`[console] error: ${err.message}`);
     res.status(500).json({ error: err.message });
   }
 });

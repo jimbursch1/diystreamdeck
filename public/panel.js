@@ -40,8 +40,10 @@ function renderPage(i) {
 }
 
 async function fire(el, btn) {
-  const endpoint = btn.method === 'text' ? '/text' : '/key';
-  const body = btn.method === 'text'
+  const endpoint = btn.method === 'text' ? '/text'
+                 : btn.method === 'console' ? '/console'
+                 : '/key';
+  const body = (btn.method === 'text' || btn.method === 'console')
     ? { command: btn.command }
     : { key: btn.key };
 

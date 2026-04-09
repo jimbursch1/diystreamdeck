@@ -28,8 +28,15 @@
   {
     "page": "BOW",
     "buttons": [
-      { "label": "BOW",  "method": "text", "command": "bow" },
-      { "label": "EOW",  "method": "text", "command": "eow" }
+      { "label": "BOW",            "method": "text",    "command": "bow" },
+      { "label": "EOW",            "method": "text",    "command": "eow" },
+      { "label": "Reload Plugins", "method": "console", "command": "ReloadAllPlugins" },
+      { "label": "Go to Station",  "method": "text",    "command": "tp vespucci" },
+      { "label": "Force Duty",     "method": "console", "command": "forceduty" },
+      { "label": "Set Walk",       "method": "text",    "command": "w cop2" },
+      { "label": "Set Time 0500",  "method": "text",    "command": "morning" },
+      { "label": "Spawn Sedan",    "method": "text",    "command": "spawn police" },
+      { "label": "Spawn SUV",      "method": "console", "command": "spawn police2" }
     ]
   }
 ]
