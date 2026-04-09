@@ -147,7 +147,7 @@ function getLocalIP() {
   return fallback || 'localhost';
 }
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   const ip = getLocalIP();
   const host = os.hostname();
   const tabletUrl = `http://${ip}:${PORT}?token=${TOKEN}`;
@@ -155,5 +155,14 @@ app.listen(PORT, () => {
   console.log(`Open on tablet (hostname): http://${host}:${PORT}?token=${TOKEN}`);
   console.log(`Open on tablet (IP):       ${tabletUrl}`);
   console.log(`Local:                     http://localhost:${PORT}?token=${TOKEN}`);
+});
 
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Is another instance already running?`);
+    console.error(`Kill it with: taskkill /F /FI "PID ne 0" /FI "IMAGENAME eq node.exe"`);
+    process.exit(1);
+  } else {
+    throw err;
+  }
 });
