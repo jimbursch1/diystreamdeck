@@ -55,7 +55,7 @@
       { "label": "Set Walk",       "method": "text",    "command": "w cop2" },
       { "label": "Set Time 0500",  "method": "text",    "command": "morning" },
       { "label": "Spawn Sedan",    "method": "text",    "command": "spawn police" },
-      { "label": "Spawn SUV",      "method": "console", "command": "spawn police2" }
+      { "label": "Spawn SUV",      "method": "paste",   "command": "spawn police2" }
     ]
   }
 ]
