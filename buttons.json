@@ -49,7 +49,7 @@
     "buttons": [
       { "label": "BOW",            "method": "text",    "command": "bow" },
       { "label": "EOW",            "method": "text",    "command": "eow" },
-      { "label": "Reload Plugins", "method": "console", "command": "ReloadAllPlugins", "inputMethod": "paste" },
+      { "label": "Reload Plugins", "method": "console", "command": "ReloadAllPlugins" },
       { "label": "Go to Station",  "method": "text",    "command": "tp vespucci" },
       { "label": "Force Duty",     "method": "console", "command": "forceduty" },
       { "label": "Set Walk",       "method": "text",    "command": "w cop2" },

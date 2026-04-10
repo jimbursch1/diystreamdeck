@@ -172,14 +172,14 @@ app.post('/console', requireToken, async (req, res) => {
   try {
     await keyboard.pressKey(Key.F4);
     await keyboard.releaseKey(Key.F4);
-    await sleep(200);
+    await sleep(500);
 
     await inputText(command, method);
     await sleep(200);
 
     await keyboard.pressKey(Key.Return);
     await keyboard.releaseKey(Key.Return);
-    await sleep(200);
+    await sleep(300);
 
     await keyboard.pressKey(Key.F4);
     await keyboard.releaseKey(Key.F4);
