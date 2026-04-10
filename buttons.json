@@ -40,7 +40,8 @@
       { "label": "Slow Traffic",   "method": "text", "command": "tf slowtraffic" },
       { "label": "Stop Traffic",   "method": "text", "command": "tf stoptraffic" },
       { "label": "Clear Vehicles", "method": "text", "command": "tf clearvehicles" },
-      { "label": "Delete Vehicle", "method": "text", "command": "dv" }
+      { "label": "Delete Vehicle", "method": "text",  "command": "dv" },
+      { "label": "DV (Paste)",     "method": "paste", "command": "dv" }
     ]
   },
   {

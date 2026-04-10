@@ -66,12 +66,12 @@ function switchPage(idx) {
 }
 
 async function fire(el, btn) {
-  const endpoint = btn.method === 'text'    ? '/text'
+  const endpoint = (btn.method === 'text' || btn.method === 'paste') ? '/text'
                  : btn.method === 'console' ? '/console'
                  : btn.method === 'chat'    ? '/chat'
                  : '/key';
-  const body = (btn.method === 'text' || btn.method === 'console' || btn.method === 'chat')
-    ? { command: btn.command }
+  const body = (btn.method === 'text' || btn.method === 'paste' || btn.method === 'console' || btn.method === 'chat')
+    ? { command: btn.command, ...(btn.method === 'paste' ? { method: 'paste' } : {}) }
     : { key: btn.key };
 
   try {

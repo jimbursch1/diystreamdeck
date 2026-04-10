@@ -44,7 +44,7 @@ const F_KEY_MAP = {
 // text/chat commands are lowercased; console commands preserve case (RPH is case-sensitive).
 const BUTTONS_PATH = path.join(__dirname, 'buttons.json');
 const _buttons = JSON.parse(fs.readFileSync(BUTTONS_PATH)).flatMap(p => p.buttons);
-const COMMAND_ALLOWLIST = new Set(_buttons.filter(b => b.method === 'text')   .map(b => b.command.trim().toLowerCase()));
+const COMMAND_ALLOWLIST = new Set(_buttons.filter(b => b.method === 'text' || b.method === 'paste').map(b => b.command.trim().toLowerCase()));
 const CHAT_ALLOWLIST    = new Set(_buttons.filter(b => b.method === 'chat')   .map(b => b.command.trim().toLowerCase()));
 const CONSOLE_ALLOWLIST = new Set(_buttons.filter(b => b.method === 'console').map(b => b.command.trim()));
 
