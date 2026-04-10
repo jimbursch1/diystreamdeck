@@ -30,13 +30,23 @@ function renderTabs() {
 function renderPage(i) {
   const panel = document.getElementById('panel');
   panel.innerHTML = '';
-  pages[i].buttons.forEach(btn => {
+  const buttons = pages[i].buttons;
+  for (let cell = 0; cell < 64; cell++) {
     const el = document.createElement('div');
-    el.className = 'btn';
-    el.textContent = btn.label;
-    el.addEventListener('click', () => fire(el, btn));
+    const num = document.createElement('span');
+    num.className = 'cell-num';
+    num.textContent = cell + 1;
+    el.appendChild(num);
+    if (cell < buttons.length) {
+      const btn = buttons[cell];
+      el.className = 'btn';
+      el.appendChild(document.createTextNode(btn.label));
+      el.addEventListener('click', () => fire(el, btn));
+    } else {
+      el.className = 'btn empty';
+    }
     panel.appendChild(el);
-  });
+  }
 }
 
 async function fire(el, btn) {
