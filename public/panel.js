@@ -71,7 +71,7 @@ async function fire(el, btn) {
                  : btn.method === 'chat'    ? '/chat'
                  : '/key';
   const body = (btn.method === 'text' || btn.method === 'paste' || btn.method === 'console' || btn.method === 'chat')
-    ? { command: btn.command, ...(btn.method === 'paste' ? { method: 'paste' } : {}) }
+    ? { command: btn.command, ...((btn.method === 'paste' || btn.inputMethod === 'paste') ? { method: 'paste' } : {}) }
     : { key: btn.key };
 
   try {
