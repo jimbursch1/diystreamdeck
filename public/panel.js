@@ -14,7 +14,7 @@ function renderTabs() {
   tabs.innerHTML = '';
   pages.forEach((page, i) => {
     const tab = document.createElement('div');
-    tab.className = 'tab' + (i === currentPage ? ' active' : '');
+    tab.className = 'tab' + (i === currentPage ? ' active' : '') + (page.page === 'Main' ? ' tab-main' : '');
     tab.textContent = page.page;
     tab.addEventListener('click', () => {
       currentPage = i;

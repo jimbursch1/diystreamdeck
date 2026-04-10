@@ -40,6 +40,10 @@ body {
   border-top-color: #4fc3f7;
 }
 
+.tab-main {
+  margin-left: auto;
+}
+
 #panel {
   flex: 1;
   overflow-y: auto;
