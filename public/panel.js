@@ -5,48 +5,64 @@ const token = new URLSearchParams(window.location.search).get('token') || '';
 async function init() {
   const res = await fetch('/buttons.json');
   pages = await res.json();
-  renderTabs();
   renderPage(0);
-}
-
-function renderTabs() {
-  const tabs = document.getElementById('tabs');
-  tabs.innerHTML = '';
-  pages.forEach((page, i) => {
-    const tab = document.createElement('div');
-    tab.className = 'tab' + (i === currentPage ? ' active' : '') + (page.page === 'Main' ? ' tab-main' : '');
-    tab.textContent = page.page;
-    tab.addEventListener('click', () => {
-      currentPage = i;
-      document.querySelectorAll('.tab').forEach((t, j) => {
-        t.classList.toggle('active', j === i);
-      });
-      renderPage(i);
-    });
-    tabs.appendChild(tab);
-  });
 }
 
 function renderPage(i) {
   const panel = document.getElementById('panel');
   panel.innerHTML = '';
   const buttons = pages[i].buttons;
-  for (let cell = 0; cell < 64; cell++) {
-    const el = document.createElement('div');
+
+  const mainIdx  = pages.findIndex(p => p.page === 'Main');
+  const navPages = pages.map((p, idx) => ({ ...p, idx })).filter(p => p.page !== 'Main');
+
+  for (let cell = 0; cell < 36; cell++) {
+    const el  = document.createElement('div');
     const num = document.createElement('span');
-    num.className = 'cell-num';
+    num.className  = 'cell-num';
     num.textContent = cell + 1;
     el.appendChild(num);
-    if (cell < buttons.length) {
+
+    if (cell === 35) {
+      // Cell 36 — Main
+      if (mainIdx >= 0) {
+        el.className = 'btn nav-btn nav-main' + (mainIdx === i ? ' nav-active' : '');
+        el.appendChild(document.createTextNode(pages[mainIdx].page));
+        el.addEventListener('click', () => switchPage(mainIdx));
+      } else {
+        el.className = 'btn empty';
+      }
+
+    } else if (cell >= 30 && cell <= 34) {
+      // Cells 31–35 — other pages
+      const slot = cell - 30; // 0–4
+      if (slot < navPages.length) {
+        const np = navPages[slot];
+        el.className = 'btn nav-btn' + (np.idx === i ? ' nav-active' : '');
+        el.appendChild(document.createTextNode(np.page));
+        el.addEventListener('click', () => switchPage(np.idx));
+      } else {
+        el.className = 'btn empty';
+      }
+
+    } else if (cell < buttons.length) {
+      // Regular action button
       const btn = buttons[cell];
       el.className = 'btn';
       el.appendChild(document.createTextNode(btn.label));
       el.addEventListener('click', () => fire(el, btn));
+
     } else {
       el.className = 'btn empty';
     }
+
     panel.appendChild(el);
   }
+}
+
+function switchPage(idx) {
+  currentPage = idx;
+  renderPage(idx);
 }
 
 async function fire(el, btn) {
