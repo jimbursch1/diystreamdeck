@@ -40,10 +40,11 @@ function renderPage(i) {
 }
 
 async function fire(el, btn) {
-  const endpoint = btn.method === 'text' ? '/text'
+  const endpoint = btn.method === 'text'    ? '/text'
                  : btn.method === 'console' ? '/console'
+                 : btn.method === 'chat'    ? '/chat'
                  : '/key';
-  const body = (btn.method === 'text' || btn.method === 'console')
+  const body = (btn.method === 'text' || btn.method === 'console' || btn.method === 'chat')
     ? { command: btn.command }
     : { key: btn.key };
 

@@ -1,5 +1,23 @@
 [
   {
+    "page": "Main",
+    "buttons": [
+      { "label": "Knock",    "method": "chat", "command": "/e knock" },
+      { "label": "Set Walk", "method": "text", "command": "w cop2"   }
+    ]
+  },
+  {
+    "page": "Vehicle",
+    "buttons": [
+      { "label": "Driver Door",     "method": "chat", "command": "/door 1" },
+      { "label": "Passenger Door",  "method": "chat", "command": "/door 2" },
+      { "label": "Left Rear Door",  "method": "chat", "command": "/door 3" },
+      { "label": "Right Rear Door", "method": "chat", "command": "/door 4" },
+      { "label": "Trunk",           "method": "chat", "command": "/trunk"  },
+      { "label": "Engine",          "method": "chat", "command": "/engine" }
+    ]
+  },
+  {
     "page": "Emotes",
     "buttons": [
       { "label": "Cross Arms",  "method": "key",  "key": "f13" },

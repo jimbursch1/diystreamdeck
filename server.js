@@ -1,5 +1,5 @@
 const express = require('express');
-const { keyboard, Key } = require('@nut-tree-fork/nut-js');
+const { keyboard, Key, clipboard } = require('@nut-tree-fork/nut-js');
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
@@ -28,6 +28,8 @@ function loadOrCreateToken() {
 
 const TOKEN = loadOrCreateToken();
 
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
 // F13-F24 key mapping for nut-js
 const F_KEY_MAP = {
   f13: Key.F13, f14: Key.F14, f15: Key.F15, f16: Key.F16,
@@ -38,42 +40,24 @@ const F_KEY_MAP = {
   f9:  Key.F9,  f10: Key.F10, f11: Key.F11, f12: Key.F12,
 };
 
-// Allowlist of Marlin-CLI commands permitted via /text (F5)
-const COMMAND_ALLOWLIST = new Set([
-  'tf thintraffic',
-  'tf slowtraffic',
-  'tf stoptraffic',
-  'tf clearvehicles',
-  'dv',
-  'bow',
-  'eow',
-  'tp vespucci',
-  'w cop2',
-  'morning',
-  'spawn police',
-  'emote crossarms',
-  'emote surrender',
-  'emote laydown',
-  'emote sit',
-  'emote lean',
-  'emote coffee',
-  'emote notepad',
-  'emote text',
-  'emote wave',
-  'emote point',
-  'emote dance',
-  'emote salute',
-  'emote celebrate',
-  'emote facepalm',
-  'emote stop',
-]);
+// Allowlists derived from buttons.json — single source of truth.
+// text/chat commands are lowercased; console commands preserve case (RPH is case-sensitive).
+const BUTTONS_PATH = path.join(__dirname, 'buttons.json');
+const _buttons = JSON.parse(fs.readFileSync(BUTTONS_PATH)).flatMap(p => p.buttons);
+const COMMAND_ALLOWLIST = new Set(_buttons.filter(b => b.method === 'text')   .map(b => b.command.trim().toLowerCase()));
+const CHAT_ALLOWLIST    = new Set(_buttons.filter(b => b.method === 'chat')   .map(b => b.command.trim().toLowerCase()));
+const CONSOLE_ALLOWLIST = new Set(_buttons.filter(b => b.method === 'console').map(b => b.command.trim()));
 
-// Allowlist of RPH console commands permitted via /console (F4)
-const CONSOLE_ALLOWLIST = new Set([
-  'ReloadAllPlugins',
-  'forceduty',
-  'spawn police2',
-]);
+// Type or paste a string depending on method ('type' | 'paste')
+async function inputText(text, method) {
+  if (method === 'paste') {
+    await clipboard.setContent(text);
+    await keyboard.pressKey(Key.LeftControl, Key.V);
+    await keyboard.releaseKey(Key.LeftControl, Key.V);
+  } else {
+    await keyboard.type(text);
+  }
+}
 
 app.use(express.json());
 
@@ -113,9 +97,10 @@ app.post('/key', requireToken, async (req, res) => {
   }
 });
 
-// POST /text — open Marlin-CLI (F5), type command, press Enter
+// POST /text — open Marlin-CLI (F5), type/paste command, press Enter
+// Optional body field: method: "paste" uses clipboard+Ctrl+V instead of keystroke-by-keystroke
 app.post('/text', requireToken, async (req, res) => {
-  const { command } = req.body;
+  const { command, method = 'type' } = req.body;
   if (!command) return res.status(400).json({ error: 'command required' });
 
   if (!COMMAND_ALLOWLIST.has(command.trim().toLowerCase())) {
@@ -123,14 +108,14 @@ app.post('/text', requireToken, async (req, res) => {
     return res.status(403).json({ error: `Command not allowed: ${command}` });
   }
 
-  console.log(`[text] ${command}`);
+  console.log(`[text] ${command} (method: ${method})`);
   try {
     await keyboard.pressKey(Key.F5);
     await keyboard.releaseKey(Key.F5);
-    await new Promise(r => setTimeout(r, 200));
+    await sleep(200);
 
-    await keyboard.type(command);
-    await new Promise(r => setTimeout(r, 200));
+    await inputText(command, method);
+    await sleep(200);
 
     await keyboard.pressKey(Key.Return);
     await keyboard.releaseKey(Key.Return);
@@ -142,9 +127,40 @@ app.post('/text', requireToken, async (req, res) => {
   }
 });
 
-// POST /console — open RPH console (F4), type command, press Enter, close (F4)
+// POST /chat — open in-game chat (T), type/paste command, press Enter
+// Optional body field: method: "paste" uses clipboard+Ctrl+V instead of keystroke-by-keystroke
+app.post('/chat', requireToken, async (req, res) => {
+  const { command, method = 'type' } = req.body;
+  if (!command) return res.status(400).json({ error: 'command required' });
+
+  if (!CHAT_ALLOWLIST.has(command.trim().toLowerCase())) {
+    console.warn(`[chat] blocked: ${command}`);
+    return res.status(403).json({ error: `Command not allowed: ${command}` });
+  }
+
+  console.log(`[chat] ${command} (method: ${method})`);
+  try {
+    await keyboard.pressKey(Key.T);
+    await keyboard.releaseKey(Key.T);
+    await sleep(200);
+
+    await inputText(command, method);
+    await sleep(200);
+
+    await keyboard.pressKey(Key.Return);
+    await keyboard.releaseKey(Key.Return);
+
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(`[chat] error: ${err.message}`);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /console — open RPH console (F4), type/paste command, press Enter, close (F4)
+// Optional body field: method: "paste" uses clipboard+Ctrl+V instead of keystroke-by-keystroke
 app.post('/console', requireToken, async (req, res) => {
-  const { command } = req.body;
+  const { command, method = 'type' } = req.body;
   if (!command) return res.status(400).json({ error: 'command required' });
 
   if (!CONSOLE_ALLOWLIST.has(command.trim())) {
@@ -152,18 +168,18 @@ app.post('/console', requireToken, async (req, res) => {
     return res.status(403).json({ error: `Command not allowed: ${command}` });
   }
 
-  console.log(`[console] ${command}`);
+  console.log(`[console] ${command} (method: ${method})`);
   try {
     await keyboard.pressKey(Key.F4);
     await keyboard.releaseKey(Key.F4);
-    await new Promise(r => setTimeout(r, 200));
+    await sleep(200);
 
-    await keyboard.type(command);
-    await new Promise(r => setTimeout(r, 200));
+    await inputText(command, method);
+    await sleep(200);
 
     await keyboard.pressKey(Key.Return);
     await keyboard.releaseKey(Key.Return);
-    await new Promise(r => setTimeout(r, 200));
+    await sleep(200);
 
     await keyboard.pressKey(Key.F4);
     await keyboard.releaseKey(Key.F4);
