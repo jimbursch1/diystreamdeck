@@ -2,8 +2,8 @@
   {
     "page": "Main",
     "buttons": [
-      { "label": "Knock",    "method": "chat", "command": "/e knock" },
-      { "label": "Set Walk", "method": "text", "command": "w cop2"   }
+      { "label": "Knock",    "method": "chat",  "command": "/e knock" },
+      { "label": "Set Walk", "method": "paste", "command": "w cop2"   }
     ]
   },
   {
@@ -20,41 +20,40 @@
   {
     "page": "Emotes",
     "buttons": [
-      { "label": "Cross Arms",  "method": "key",  "key": "f13" },
-      { "label": "Hands Up",   "method": "key",  "key": "f14" },
-      { "label": "Lay Down",   "method": "key",  "key": "f15" },
-      { "label": "Sit",        "method": "key",  "key": "f16" },
-      { "label": "Lean",       "method": "key",  "key": "f17" },
-      { "label": "Coffee",     "method": "key",  "key": "f18" },
-      { "label": "Notepad",    "method": "key",  "key": "f19" },
-      { "label": "Text",       "method": "key",  "key": "f20" },
-      { "label": "Wave",       "method": "key",  "key": "f21" },
-      { "label": "Point",      "method": "key",  "key": "f22" },
-      { "label": "Clear",      "method": "key",  "key": "f23" }
+      { "label": "Cross Arms",  "method": "key", "key": "f13" },
+      { "label": "Hands Up",   "method": "key", "key": "f14" },
+      { "label": "Lay Down",   "method": "key", "key": "f15" },
+      { "label": "Sit",        "method": "key", "key": "f16" },
+      { "label": "Lean",       "method": "key", "key": "f17" },
+      { "label": "Coffee",     "method": "key", "key": "f18" },
+      { "label": "Notepad",    "method": "key", "key": "f19" },
+      { "label": "Text",       "method": "key", "key": "f20" },
+      { "label": "Wave",       "method": "key", "key": "f21" },
+      { "label": "Point",      "method": "key", "key": "f22" },
+      { "label": "Clear",      "method": "key", "key": "f23" }
     ]
   },
   {
     "page": "Traffic",
     "buttons": [
-      { "label": "Thin Traffic",   "method": "text", "command": "tf thintraffic" },
-      { "label": "Slow Traffic",   "method": "text", "command": "tf slowtraffic" },
-      { "label": "Stop Traffic",   "method": "text", "command": "tf stoptraffic" },
-      { "label": "Clear Vehicles", "method": "text", "command": "tf clearvehicles" },
-      { "label": "Delete Vehicle", "method": "text",  "command": "dv" },
-      { "label": "DV (Paste)",     "method": "paste", "command": "dv" }
+      { "label": "Thin Traffic",   "method": "paste", "command": "tf thintraffic" },
+      { "label": "Slow Traffic",   "method": "paste", "command": "tf slowtraffic" },
+      { "label": "Stop Traffic",   "method": "paste", "command": "tf stoptraffic" },
+      { "label": "Clear Vehicles", "method": "paste", "command": "tf clearvehicles" },
+      { "label": "Delete Vehicle", "method": "paste", "command": "dv" }
     ]
   },
   {
     "page": "BOW",
     "buttons": [
-      { "label": "BOW",            "method": "text",    "command": "bow" },
-      { "label": "EOW",            "method": "text",    "command": "eow" },
+      { "label": "BOW",            "method": "paste",   "command": "bow" },
+      { "label": "EOW",            "method": "paste",   "command": "eow" },
       { "label": "Reload Plugins", "method": "console", "command": "ReloadAllPlugins" },
-      { "label": "Go to Station",  "method": "text",    "command": "tp vespucci" },
+      { "label": "Go to Station",  "method": "paste",   "command": "tp vespucci" },
       { "label": "Force Duty",     "method": "console", "command": "forceduty" },
-      { "label": "Set Walk",       "method": "text",    "command": "w cop2" },
-      { "label": "Set Time 0500",  "method": "text",    "command": "morning" },
-      { "label": "Spawn Sedan",    "method": "text",    "command": "spawn police" },
+      { "label": "Set Walk",       "method": "paste",   "command": "w cop2" },
+      { "label": "Set Time 0500",  "method": "paste",   "command": "morning" },
+      { "label": "Spawn Sedan",    "method": "paste",   "command": "spawn police" },
       { "label": "Spawn SUV",      "method": "paste",   "command": "spawn police2" }
     ]
   }
