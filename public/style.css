@@ -24,9 +24,9 @@ body {
 
 .tab {
   flex: 1;
-  padding: 14px 12px;
+  padding: 28px 12px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   color: #888;
   cursor: pointer;
   white-space: nowrap;
