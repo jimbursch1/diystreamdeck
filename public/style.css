@@ -8,9 +8,9 @@
   --text-dim:       #3a6080;
   --accent:         #1d6fa8;
   --accent-glow:    rgba(29, 111, 168, 0.35);
-  --empty-bg:       #080c10;
-  --empty-border:   #0f1820;
-  --num-color:      #172436;
+  --empty-bg:       #111c28;
+  --empty-border:   #2a4a66;
+  --num-color:      #4a7a9b;
   --success:        #00c853;
   --success-bg:     #001408;
   --success-glow:   rgba(0, 200, 83, 0.2);
@@ -136,7 +136,7 @@ body::after {
   top: 3px;
   left: 4px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 9px;
+  font-size: 11px;
   color: var(--num-color);
   pointer-events: none;
   line-height: 1;
