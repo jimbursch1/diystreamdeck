@@ -23,7 +23,6 @@ body {
 }
 
 .tab {
-  flex: 1;
   padding: 28px 12px;
   font-size: 15px;
   font-weight: 500;
