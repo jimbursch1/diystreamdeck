@@ -65,8 +65,8 @@ body::after {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(8, 1fr);
-  gap: 5px;
-  padding: 8px;
+  gap: 3px;
+  padding: 4px;
 }
 
 /* ── BUTTONS ──────────────────────────────────────── */
@@ -78,9 +78,9 @@ body::after {
   border-radius: 5px;
   color: var(--text);
   font-family: 'Rajdhani', sans-serif;
-  font-size: 12px;
+  font-size: 16px;
   font-weight: 700;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   text-align: center;
   cursor: pointer;
@@ -136,7 +136,7 @@ body::after {
   top: 3px;
   left: 4px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 8px;
+  font-size: 9px;
   color: var(--num-color);
   pointer-events: none;
   line-height: 1;
