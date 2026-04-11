@@ -30,10 +30,12 @@ function renderPage(i) {
 
   for (let cell = 0; cell < 36; cell++) {
     const el  = document.createElement('div');
-    const num = document.createElement('span');
-    num.className  = 'cell-num';
-    num.textContent = pageLetter + (cell + 1);
-    el.appendChild(num);
+    if (editMode) {
+      const num = document.createElement('span');
+      num.className  = 'cell-num';
+      num.textContent = pageLetter + (cell + 1);
+      el.appendChild(num);
+    }
 
     if (cell === 35) {
       // Cell 36 — Main

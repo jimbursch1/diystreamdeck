@@ -8,6 +8,6 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "@nut-tree/nut-js": "^4.2.2"
+    "@nut-tree-fork/nut-js": "^4.2.6"
   }
 }

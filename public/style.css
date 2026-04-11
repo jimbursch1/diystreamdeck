@@ -1,8 +1,8 @@
 :root {
   --bg:             #06090d;
-  --surface:        #0c1520;
-  --surface-press:  #060c14;
-  --border:         #19293d;
+  --surface:        #182d45;
+  --surface-press:  #0e1e30;
+  --border:         #2e5070;
   --border-active:  #1d6fa8;
   --text:           #8ab8d0;
   --text-dim:       #3a6080;
@@ -108,7 +108,7 @@ body::after {
 
 .btn.empty {
   background: var(--empty-bg);
-  border-color: var(--empty-border);
+  border-color: transparent;
   cursor: default;
   box-shadow: none;
 }
