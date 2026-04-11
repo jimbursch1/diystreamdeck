@@ -6,6 +6,10 @@
       { "label": "Log Entry", "method": "paste", "command": "pp log"  },
       { "label": "CAD",       "method": "paste", "command": "cad"     },
       { "label": "Set Walk",  "method": "paste", "command": "w cop2"  },
+      null, null, null, null, null,
+      null, null, null, null, null,
+      null, null, null, null, null,
+      null, null, null, null, null,
       { "label": "CLI",       "method": "page",  "page":    "CLI"     }
     ]
   },

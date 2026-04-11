@@ -17,8 +17,8 @@
   --error:          #ff1744;
   --error-bg:       #160004;
   --error-glow:     rgba(255, 23, 68, 0.2);
-  --nav-bg:         #040710;
-  --nav-border:     #0d1d2e;
+  --nav-bg:         #1a4428;
+  --nav-border:     #2e7848;
   --tab-inactive:   #253c52;
   --tab-active:     #8ab8d0;
   --tab-accent:     #1d6fa8;
@@ -153,7 +153,7 @@ body::after {
 .nav-btn {
   background: var(--nav-bg);
   border-color: var(--nav-border);
-  color: var(--text);
+  color: #4db87a;
   font-size: 18px;
   letter-spacing: 0.1em;
 }
@@ -167,16 +167,16 @@ body::after {
 }
 
 .nav-main {
-  color: var(--accent);
-  border-color: var(--accent);
+  color: #4db87a;
+  border-color: var(--nav-border);
 }
 
 .nav-main.nav-active {
-  color: var(--tab-active);
-  background: var(--surface);
+  color: #a0f0c0;
+  background: var(--nav-bg);
   box-shadow:
-    0 0 12px var(--accent-glow),
-    inset 0 0 8px rgba(29, 111, 168, 0.08);
+    0 0 12px rgba(77, 184, 122, 0.3),
+    inset 0 0 8px rgba(77, 184, 122, 0.08);
 }
 
 /* ── REFERENCE PAGE ──────────────────────────────── */
@@ -251,16 +251,16 @@ body::after {
 
 .ref-cmd {
   font-family: 'Share Tech Mono', monospace;
-  font-size: 12px;
+  font-size: 16px;
   color: var(--text);
   white-space: nowrap;
-  min-width: 170px;
+  min-width: 210px;
   flex-shrink: 0;
 }
 
 .ref-desc {
   font-family: 'Rajdhani', sans-serif;
-  font-size: 13px;
+  font-size: 17px;
   color: var(--text-dim);
   line-height: 1.3;
 }

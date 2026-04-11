@@ -60,7 +60,11 @@ function renderPage(i) {
     } else if (cell < buttons.length) {
       // Regular action button
       const btn = buttons[cell];
-      el.className = 'btn' + (editMode ? ' edit-mode' : '');
+      if (!btn) {
+        el.className = 'btn empty';
+      } else {
+      const isNav = btn.method === 'page';
+      el.className = 'btn' + (isNav ? ' nav-btn' : '') + (editMode ? ' edit-mode' : '');
       el.appendChild(document.createTextNode(btn.label));
       if (editMode) {
         const badge = document.createElement('span');
@@ -69,6 +73,7 @@ function renderPage(i) {
         el.appendChild(badge);
       }
       el.addEventListener('click', () => fire(el, btn));
+      }
 
     } else {
       el.className = 'btn empty';
