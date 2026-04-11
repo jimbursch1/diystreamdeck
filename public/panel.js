@@ -1,8 +1,12 @@
 let pages = [];
 let currentPage = 0;
-const token = new URLSearchParams(window.location.search).get('token') || '';
+const token    = new URLSearchParams(window.location.search).get('token') || '';
+const editMode = new URLSearchParams(window.location.search).has('edit');
 
 async function init() {
+  if (editMode) {
+    document.getElementById('edit-banner').removeAttribute('hidden');
+  }
   const res = await fetch('/buttons.json');
   pages = await res.json();
   renderPage(0);
@@ -13,14 +17,15 @@ function renderPage(i) {
   panel.innerHTML = '';
   const buttons = pages[i].buttons;
 
-  const mainIdx  = pages.findIndex(p => p.page === 'Main');
-  const navPages = pages.map((p, idx) => ({ ...p, idx })).filter(p => p.page !== 'Main');
+  const mainIdx   = pages.findIndex(p => p.page === 'Main');
+  const navPages  = pages.map((p, idx) => ({ ...p, idx })).filter(p => p.page !== 'Main');
+  const pageLetter = String.fromCharCode(65 + i); // A, B, C…
 
   for (let cell = 0; cell < 36; cell++) {
     const el  = document.createElement('div');
     const num = document.createElement('span');
     num.className  = 'cell-num';
-    num.textContent = cell + 1;
+    num.textContent = pageLetter + (cell + 1);
     el.appendChild(num);
 
     if (cell === 35) {
@@ -48,8 +53,14 @@ function renderPage(i) {
     } else if (cell < buttons.length) {
       // Regular action button
       const btn = buttons[cell];
-      el.className = 'btn';
+      el.className = 'btn' + (editMode ? ' edit-mode' : '');
       el.appendChild(document.createTextNode(btn.label));
+      if (editMode) {
+        const badge = document.createElement('span');
+        badge.className = 'btn-method method-' + btn.method;
+        badge.textContent = btn.method;
+        el.appendChild(badge);
+      }
       el.addEventListener('click', () => fire(el, btn));
 
     } else {
@@ -66,6 +77,7 @@ function switchPage(idx) {
 }
 
 async function fire(el, btn) {
+  if (editMode) return;
   const endpoint = (btn.method === 'text' || btn.method === 'paste') ? '/text'
                  : btn.method === 'console' ? '/console'
                  : btn.method === 'chat'    ? '/chat'
