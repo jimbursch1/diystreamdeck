@@ -178,12 +178,12 @@ function renderReferencePage(i, panel) {
 }
 
 async function fire(el, btn) {
-  if (editMode) return;
   if (btn.method === 'page') {
     const idx = pages.findIndex(p => p.page === btn.page);
     if (idx >= 0) switchPage(idx);
     return;
   }
+  if (editMode) return;
   const endpoint = (btn.method === 'text' || btn.method === 'paste') ? '/text'
                  : btn.method === 'console' ? '/console'
                  : btn.method === 'chat'    ? '/chat'
