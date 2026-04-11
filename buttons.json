@@ -51,6 +51,19 @@
     ]
   },
   {
+    "page": "Ped Interact",
+    "buttons": [
+      { "label": "Release",    "method": "paste", "command": "pp release" },
+      { "label": "Cite",       "method": "paste", "command": "pp cite"    },
+      { "label": "ID",         "method": "paste", "command": "pp id"      },
+      { "label": "Arrest",     "method": "paste", "command": "arrest"     },
+      { "label": "Detain",     "method": "paste", "command": "pp detain"  },
+      { "label": "Grab",       "method": "paste", "command": "grab"       },
+      { "label": "Go Here",    "method": "paste", "command": "gohere"     },
+      { "label": "In/Out Car", "method": "paste", "command": "inoutcar"   }
+    ]
+  },
+  {
     "page": "BOW",
     "buttons": [
       { "label": "BOW",            "method": "paste",   "command": "bow" },
