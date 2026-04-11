@@ -179,6 +179,92 @@ body::after {
     inset 0 0 8px rgba(29, 111, 168, 0.08);
 }
 
+/* ── REFERENCE PAGE ──────────────────────────────── */
+
+#panel.reference {
+  display: block;
+  overflow-y: auto;
+  padding: 0;
+}
+
+.ref-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 8px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 10;
+}
+
+.ref-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+.ref-back {
+  background: var(--surface);
+  border: 1px solid var(--border-active);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+}
+
+.ref-back:active {
+  background: var(--surface-press);
+}
+
+.ref-content {
+  padding: 6px 10px 16px;
+}
+
+.ref-section {
+  margin-bottom: 12px;
+}
+
+.ref-section-title {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  padding: 6px 0 3px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3px;
+}
+
+.ref-row {
+  display: flex;
+  gap: 10px;
+  padding: 3px 2px;
+  border-bottom: 1px solid rgba(25, 41, 61, 0.5);
+  align-items: baseline;
+}
+
+.ref-cmd {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text);
+  white-space: nowrap;
+  min-width: 170px;
+  flex-shrink: 0;
+}
+
+.ref-desc {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.3;
+}
+
 /* ── EDIT MODE ────────────────────────────────────── */
 
 #edit-banner {

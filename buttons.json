@@ -5,7 +5,8 @@
       { "label": "Knock",     "method": "chat",  "command": "/e knock" },
       { "label": "Log Entry", "method": "paste", "command": "pp log"  },
       { "label": "CAD",       "method": "paste", "command": "cad"     },
-      { "label": "Set Walk",  "method": "paste", "command": "w cop2"  }
+      { "label": "Set Walk",  "method": "paste", "command": "w cop2"  },
+      { "label": "CLI",       "method": "page",  "page":    "CLI"     }
     ]
   },
   {
@@ -57,6 +58,27 @@
       { "label": "Set Time 0500",  "method": "paste",   "command": "morning" },
       { "label": "Spawn Sedan",    "method": "paste",   "command": "spawn police" },
       { "label": "Spawn SUV",      "method": "paste",   "command": "spawn police2" }
+    ]
+  },
+  {
+    "page": "CLI",
+    "type": "reference"
+  },
+  {
+    "page": "Peds",
+    "buttons": [
+      { "label": "Identify",    "method": "paste", "command": "pp id"      },
+      { "label": "Detain",      "method": "paste", "command": "pp detain"  },
+      { "label": "Release",     "method": "paste", "command": "pp release" },
+      { "label": "Cite",        "method": "paste", "command": "pp cite"    },
+      { "label": "Give Card",   "method": "paste", "command": "pp card"    },
+      { "label": "Ped Info",    "method": "paste", "command": "pp info"    },
+      { "label": "Ped List",    "method": "paste", "command": "pp list"    },
+      { "label": "Profile",     "method": "paste", "command": "pp profile" },
+      { "label": "Spawn Peds",  "method": "paste", "command": "pp spawn"   },
+      { "label": "Log Entry",   "method": "paste", "command": "pp log"     },
+      { "label": "Screenshot",  "method": "paste", "command": "pp ss"      },
+      { "label": "Reset Ped",   "method": "paste", "command": "pp reset"   }
     ]
   }
 ]
