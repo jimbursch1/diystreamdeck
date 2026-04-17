@@ -20,12 +20,23 @@ function renderPage(i) {
     return;
   }
 
+  if (pages[i].type === 'cli-index') {
+    renderCliIndexPage(i, panel);
+    return;
+  }
+
+  if (pages[i].type === 'list') {
+    renderListPage(i, panel);
+    return;
+  }
+
   panel.className = '';
   panel.innerHTML = '';
   const buttons = pages[i].buttons;
 
   const mainIdx   = pages.findIndex(p => p.page === 'Main');
-  const navPages  = pages.map((p, idx) => ({ ...p, idx })).filter(p => p.page !== 'Main' && p.type !== 'reference');
+  const navPages  = pages.map((p, idx) => ({ ...p, idx }))
+    .filter(p => p.page !== 'Main' && p.type !== 'reference' && p.section !== 'cli');
   const pageLetter = String.fromCharCode(65 + i); // A, B, C…
 
   for (let cell = 0; cell < 36; cell++) {
@@ -88,6 +99,222 @@ function renderPage(i) {
 function switchPage(idx) {
   currentPage = idx;
   renderPage(idx);
+}
+
+// ── CLI INDEX PAGE ─────────────────────────────────────────────────────────────
+
+function renderCliIndexPage(i, panel) {
+  panel.className = 'cli-index';
+  panel.innerHTML = '';
+
+  const mainIdx = pages.findIndex(p => p.page === 'Main');
+
+  const header = document.createElement('div');
+  header.className = 'cli-index-header';
+
+  const bc = renderBreadcrumb([
+    { label: 'MAIN', action: () => switchPage(mainIdx) },
+    { label: 'CLI', active: true },
+  ]);
+  header.appendChild(bc);
+
+  panel.appendChild(header);
+
+  const grid = document.createElement('div');
+  grid.className = 'cli-group-grid';
+
+  const cliPages = pages.map((p, idx) => ({ ...p, idx }))
+    .filter(p => p.section === 'cli');
+
+  for (const cp of cliPages) {
+    const btn = document.createElement('div');
+    btn.className = 'cli-group-btn';
+    btn.textContent = cp.page;
+    btn.addEventListener('click', () => switchPage(cp.idx));
+    grid.appendChild(btn);
+  }
+
+  panel.appendChild(grid);
+}
+
+// ── LIST PAGE ─────────────────────────────────────────────────────────────────
+
+function renderListPage(i, panel) {
+  panel.className = 'list-page';
+  panel.innerHTML = '';
+
+  const mainIdx = pages.findIndex(p => p.page === 'Main');
+  const cliIdx  = pages.findIndex(p => p.type === 'cli-index');
+
+  const header = document.createElement('div');
+  header.className = 'list-header';
+
+  const bc = renderBreadcrumb([
+    { label: 'MAIN', action: () => switchPage(mainIdx) },
+    { label: 'CLI',  action: () => switchPage(cliIdx)  },
+    { label: pages[i].page.toUpperCase(), active: true },
+  ]);
+  header.appendChild(bc);
+
+  const tabs = renderGroupTabs(i);
+  header.appendChild(tabs);
+
+  panel.appendChild(header);
+
+  const rows = document.createElement('div');
+  rows.className = 'list-rows';
+
+  for (const btn of (pages[i].buttons || [])) {
+    if (!btn) continue;
+    const row = document.createElement('div');
+    row.className = 'list-row';
+
+    const idEl = document.createElement('span');
+    idEl.className = 'list-id';
+    idEl.textContent = btn.id != null ? String(btn.id) : '';
+
+    const btnEl = document.createElement('div');
+    btnEl.className = 'list-btn';
+    btnEl.textContent = btn.label;
+    btnEl.addEventListener('click', () => fireListBtn(btnEl, btn));
+
+    const descEl = document.createElement('span');
+    descEl.className = 'list-desc';
+    descEl.textContent = btn.description || '';
+
+    row.appendChild(idEl);
+    row.appendChild(btnEl);
+    row.appendChild(descEl);
+    rows.appendChild(row);
+  }
+
+  panel.appendChild(rows);
+}
+
+// ── BREADCRUMB ────────────────────────────────────────────────────────────────
+
+function renderBreadcrumb(segments) {
+  const el = document.createElement('div');
+  el.className = 'breadcrumb';
+  segments.forEach((seg, idx) => {
+    if (idx > 0) {
+      const sep = document.createElement('span');
+      sep.className = 'breadcrumb-sep';
+      sep.textContent = '/';
+      el.appendChild(sep);
+    }
+    const s = document.createElement('span');
+    s.className = 'breadcrumb-seg' + (seg.active ? ' active' : '');
+    s.textContent = seg.label;
+    if (seg.action) s.addEventListener('click', seg.action);
+    el.appendChild(s);
+  });
+  return el;
+}
+
+// ── GROUP TABS ────────────────────────────────────────────────────────────────
+
+function renderGroupTabs(currentIdx) {
+  const cliPages = pages.map((p, idx) => ({ ...p, idx }))
+    .filter(p => p.section === 'cli');
+
+  const el = document.createElement('div');
+  el.className = 'tab-strip';
+
+  for (const cp of cliPages) {
+    const tab = document.createElement('div');
+    tab.className = 'tab-strip-btn' + (cp.idx === currentIdx ? ' active' : '');
+    tab.textContent = cp.page;
+    tab.addEventListener('click', () => switchPage(cp.idx));
+    el.appendChild(tab);
+  }
+
+  return el;
+}
+
+// ── FIRE (LIST PAGE) ──────────────────────────────────────────────────────────
+
+async function fireListBtn(el, btn) {
+  if (editMode) return;
+  const endpoint = btn.method === 'command' ? '/command'
+                 : (btn.method === 'text' || btn.method === 'paste') ? '/text'
+                 : btn.method === 'console' ? '/console'
+                 : btn.method === 'chat'    ? '/chat'
+                 : '/key';
+
+  let body;
+  if (btn.method === 'command') {
+    body = { command: btn.command };
+  } else if (btn.method === 'text' || btn.method === 'paste' || btn.method === 'console' || btn.method === 'chat') {
+    body = { command: btn.command, ...(btn.method === 'paste' ? { method: 'paste' } : {}) };
+  } else {
+    body = { key: btn.key };
+  }
+
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    flashListBtn(el, data.ok ? 'success' : 'error');
+  } catch {
+    flashListBtn(el, 'error');
+  }
+}
+
+function flashListBtn(el, cls) {
+  el.classList.add(cls);
+  setTimeout(() => el.classList.remove(cls), 600);
+}
+
+// ── FIRE (GRID PAGE) ──────────────────────────────────────────────────────────
+
+async function fire(el, btn) {
+  if (btn.method === 'page') {
+    const idx = pages.findIndex(p => p.page === btn.page);
+    if (idx >= 0) switchPage(idx);
+    return;
+  }
+  if (editMode) return;
+  const endpoint = btn.method === 'command' ? '/command'
+                 : (btn.method === 'text' || btn.method === 'paste') ? '/text'
+                 : btn.method === 'console' ? '/console'
+                 : btn.method === 'chat'    ? '/chat'
+                 : '/key';
+
+  let body;
+  if (btn.method === 'command') {
+    body = { command: btn.command };
+  } else if (btn.method === 'text' || btn.method === 'paste' || btn.method === 'console' || btn.method === 'chat') {
+    body = { command: btn.command, ...(btn.method === 'paste' ? { method: 'paste' } : {}) };
+  } else {
+    body = { key: btn.key };
+  }
+
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    flash(el, data.ok ? 'success' : 'error');
+  } catch {
+    flash(el, 'error');
+  }
+}
+
+function flash(el, cls) {
+  el.classList.add(cls);
+  setTimeout(() => el.classList.remove(cls), 600);
 }
 
 function renderReferencePage(i, panel) {
@@ -182,42 +409,6 @@ function renderReferencePage(i, panel) {
       </div>
     </div>
   `;
-}
-
-async function fire(el, btn) {
-  if (btn.method === 'page') {
-    const idx = pages.findIndex(p => p.page === btn.page);
-    if (idx >= 0) switchPage(idx);
-    return;
-  }
-  if (editMode) return;
-  const endpoint = (btn.method === 'text' || btn.method === 'paste') ? '/text'
-                 : btn.method === 'console' ? '/console'
-                 : btn.method === 'chat'    ? '/chat'
-                 : '/key';
-  const body = (btn.method === 'text' || btn.method === 'paste' || btn.method === 'console' || btn.method === 'chat')
-    ? { command: btn.command, ...(btn.method === 'paste' ? { method: 'paste' } : {}) }
-    : { key: btn.key };
-
-  try {
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(body),
-    });
-    const data = await res.json();
-    flash(el, data.ok ? 'success' : 'error');
-  } catch {
-    flash(el, 'error');
-  }
-}
-
-function flash(el, cls) {
-  el.classList.add(cls);
-  setTimeout(() => el.classList.remove(cls), 600);
 }
 
 init();

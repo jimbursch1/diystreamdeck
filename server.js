@@ -2,6 +2,7 @@ const express = require('express');
 const { keyboard, Key, clipboard } = require('@nut-tree-fork/nut-js');
 const crypto = require('crypto');
 const fs = require('fs');
+const net = require('net');
 const path = require('path');
 const os = require('os');
 
@@ -45,6 +46,7 @@ const F_KEY_MAP = {
 const BUTTONS_PATH = path.join(__dirname, 'buttons.json');
 const _buttons = JSON.parse(fs.readFileSync(BUTTONS_PATH)).flatMap(p => p.buttons || []).filter(Boolean);
 const COMMAND_ALLOWLIST = new Set(_buttons.filter(b => b.method === 'text' || b.method === 'paste').map(b => b.command.trim().toLowerCase()));
+const PIPE_ALLOWLIST    = new Set(_buttons.filter(b => b.method === 'command').map(b => b.command.trim().toLowerCase()));
 const CHAT_ALLOWLIST    = new Set(_buttons.filter(b => b.method === 'chat')   .map(b => b.command.trim().toLowerCase()));
 const CONSOLE_ALLOWLIST = new Set(_buttons.filter(b => b.method === 'console').map(b => b.command.trim()));
 
@@ -188,6 +190,54 @@ app.post('/console', requireToken, async (req, res) => {
   } catch (err) {
     console.error(`[console] error: ${err.message}`);
     res.status(500).json({ error: err.message });
+  }
+});
+
+// POST /command — write directly to marlin-cli named pipe, no keyboard simulation
+// Falls back to F5+paste if pipe unavailable (game not running / plugin not loaded).
+app.post('/command', requireToken, async (req, res) => {
+  const { command } = req.body;
+  if (!command) return res.status(400).json({ error: 'command required' });
+
+  const key = command.trim().toLowerCase();
+  if (!PIPE_ALLOWLIST.has(key)) {
+    console.warn(`[command] blocked: ${command}`);
+    return res.status(403).json({ error: `Command not allowed: ${command}` });
+  }
+
+  console.log(`[command] ${command}`);
+  try {
+    await new Promise((resolve, reject) => {
+      const client = net.createConnection('\\\\.\\pipe\\marlin-cli', () => {
+        client.write(key + '\n', () => {
+          client.end();
+          resolve();
+        });
+      });
+      client.on('error', reject);
+      client.setTimeout(2000, () => {
+        client.destroy();
+        reject(new Error('pipe timeout'));
+      });
+    });
+    res.json({ ok: true, method: 'pipe' });
+  } catch (pipeErr) {
+    console.warn(`[command] pipe unavailable (${pipeErr.message}), falling back to paste`);
+    try {
+      await keyboard.pressKey(Key.F5);
+      await keyboard.releaseKey(Key.F5);
+      await sleep(200);
+      await clipboard.setContent(key);
+      await keyboard.pressKey(Key.LeftControl, Key.V);
+      await keyboard.releaseKey(Key.LeftControl, Key.V);
+      await sleep(200);
+      await keyboard.pressKey(Key.Return);
+      await keyboard.releaseKey(Key.Return);
+      res.json({ ok: true, method: 'paste-fallback' });
+    } catch (fallbackErr) {
+      console.error(`[command] fallback failed: ${fallbackErr.message}`);
+      res.status(503).json({ error: `Pipe and paste both failed` });
+    }
   }
 });
 
