@@ -37,17 +37,17 @@
   {
     "page": "Emotes",
     "buttons": [
-      { "label": "Cross Arms",  "method": "key", "key": "f13" },
-      { "label": "Hands Up",   "method": "key", "key": "f14" },
-      { "label": "Lay Down",   "method": "key", "key": "f15" },
-      { "label": "Sit",        "method": "key", "key": "f16" },
-      { "label": "Lean",       "method": "key", "key": "f17" },
-      { "label": "Coffee",     "method": "key", "key": "f18" },
-      { "label": "Notepad",    "method": "key", "key": "f19" },
-      { "label": "Text",       "method": "key", "key": "f20" },
-      { "label": "Wave",       "method": "key", "key": "f21" },
-      { "label": "Point",      "method": "key", "key": "f22" },
-      { "label": "Clear",      "method": "key", "key": "f23" }
+      { "label": "Cross Arms", "method": "command", "command": "e crossarms" },
+      { "label": "Hands Up",   "method": "command", "command": "e handsup"   },
+      { "label": "Lay Down",   "method": "command", "command": "e laydown"   },
+      { "label": "Sit",        "method": "command", "command": "e sit"       },
+      { "label": "Lean",       "method": "command", "command": "e lean"      },
+      { "label": "Coffee",     "method": "command", "command": "e coffee"    },
+      { "label": "Notepad",    "method": "command", "command": "e notepad"   },
+      { "label": "Text",       "method": "command", "command": "e text"      },
+      { "label": "Wave",       "method": "command", "command": "e wave"      },
+      { "label": "Point",      "method": "command", "command": "e point"     },
+      { "label": "Clear",      "method": "command", "command": "e stop"      }
     ]
   },
   {
