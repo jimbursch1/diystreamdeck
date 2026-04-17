@@ -185,7 +185,11 @@
       { "id": 51, "label": "Moon Gravity",   "method": "command", "command": "gravity moon",     "description": "Moon gravity — normal, heavy" },
       { "id": 52, "label": "Normal Gravity", "method": "command", "command": "gravity normal",   "description": "Reset gravity to normal" },
       { "id": 53, "label": "Blackout",       "method": "command", "command": "blackout",         "description": "Toggle city lights blackout" },
-      { "id": 54, "label": "Clear Peds",     "method": "command", "command": "clearpeds",        "description": "Delete all peds in 30m radius" }
+      { "id": 54, "label": "Clear Peds",     "method": "command", "command": "clearpeds",        "description": "Delete all peds in 30m radius" },
+      { "id": 127, "label": "Loc List",      "method": "command", "command": "loc list",          "description": "List all saved locations" },
+      { "id": 128, "label": "Ambient Trig",  "method": "command", "command": "ambient trigger",   "description": "Trigger a random ambient encounter" },
+      { "id": 129, "label": "Ambient On",    "method": "command", "command": "ambient on",        "description": "Enable ambient encounter system" },
+      { "id": 130, "label": "Ambient Off",   "method": "command", "command": "ambient off",       "description": "Disable ambient encounter system" }
     ]
   },
   {
@@ -238,7 +242,7 @@
       { "id": 83, "label": "Backup",     "method": "command", "command": "backup",                    "description": "Spawn armed cop backup" },
       { "id": 84, "label": "Bodyguard",  "method": "command", "command": "bodyguard",                 "description": "Spawn armed bodyguard" },
       { "id": 85, "label": "Suspect",    "method": "command", "command": "suspect",                   "description": "Spawn fleeing suspect" },
-      { "id": 86, "label": "Hostile",    "method": "command", "command": "hostile",                   "description": "Spawn hostile NPC (attacks player)" },
+      { "id": 86, "label": "Spawn Obj",  "method": "command", "command": "object",                    "description": "Spawn object [model] — e.g. prop_barrier_wat_03a" },
       { "id": 87, "label": "Victim",     "method": "command", "command": "victim",                    "description": "Spawn distressed victim" },
       { "id": 88, "label": "Witness",    "method": "command", "command": "witness",                   "description": "Spawn witness NPC" },
       { "id": 89, "label": "Passenger",  "method": "command", "command": "passenger",                 "description": "Spawn passenger into player vehicle" },
