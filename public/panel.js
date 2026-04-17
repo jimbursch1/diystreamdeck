@@ -77,7 +77,8 @@ function renderPage(i) {
         el.className = 'btn empty';
       } else {
       const isNav = btn.method === 'page';
-      el.className = 'btn' + (isNav ? ' nav-btn' : '') + (editMode ? ' edit-mode' : '');
+      const colorClass = btn.color ? ` btn-color-${btn.color}` : '';
+      el.className = 'btn' + (isNav ? ' nav-btn' : '') + colorClass + (editMode ? ' edit-mode' : '');
       el.appendChild(document.createTextNode(btn.label));
       if (editMode) {
         const badge = document.createElement('span');
