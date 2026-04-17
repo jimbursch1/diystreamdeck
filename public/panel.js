@@ -246,7 +246,7 @@ async function fireListBtn(el, btn) {
   if (btn.method === 'command') {
     body = { command: btn.command };
   } else if (btn.method === 'text' || btn.method === 'paste' || btn.method === 'console' || btn.method === 'chat') {
-    body = { command: btn.command, ...(btn.method === 'paste' ? { method: 'paste' } : {}) };
+    body = { command: btn.command, ...(btn.method === 'paste' || btn.method === 'console' ? { method: 'paste' } : {}) };
   } else {
     body = { key: btn.key };
   }
@@ -291,7 +291,7 @@ async function fire(el, btn) {
   if (btn.method === 'command') {
     body = { command: btn.command };
   } else if (btn.method === 'text' || btn.method === 'paste' || btn.method === 'console' || btn.method === 'chat') {
-    body = { command: btn.command, ...(btn.method === 'paste' ? { method: 'paste' } : {}) };
+    body = { command: btn.command, ...(btn.method === 'paste' || btn.method === 'console' ? { method: 'paste' } : {}) };
   } else {
     body = { key: btn.key };
   }

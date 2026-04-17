@@ -2,15 +2,24 @@
   {
     "page": "Main",
     "buttons": [
-      { "label": "Knock",     "method": "chat",  "command": "/e knock" },
-      { "label": "Log Entry", "method": "paste", "command": "pp log"  },
-      { "label": "CAD",       "method": "paste", "command": "cad"     },
-      { "label": "Set Walk",  "method": "paste", "command": "w cop2"  },
+      { "label": "Knock",      "method": "chat",    "command": "/e knock"    },
+      { "label": "Log Entry",  "method": "paste",   "command": "pp log"      },
+      { "label": "CAD",        "method": "paste",   "command": "cad"         },
+      { "label": "Screenshot", "method": "paste",   "command": "pp ss"       },
+      { "label": "Revive",     "method": "paste",   "command": "revive"      },
+      { "label": "Walk Cop2",  "method": "command", "command": "w cop2"      },
+      { "label": "Walk Injured","method": "command", "command": "w injured"  },
+      { "label": "ID",         "method": "command", "command": "pp id"       },
+      { "label": "Detain",     "method": "command", "command": "pp detain"   },
+      { "label": "Release",    "method": "command", "command": "pp release"  },
+      { "label": "Cite",       "method": "command", "command": "pp cite"     },
+      { "label": "Arrest",     "method": "command", "command": "arrest"      },
+      { "label": "Grab",       "method": "command", "command": "grab"        },
+      { "label": "Go Here",    "method": "command", "command": "gohere"      },
+      { "label": "In/Out Car", "method": "command", "command": "inoutcar"    },
       null, null, null, null, null,
       null, null, null, null, null,
-      null, null, null, null, null,
-      null, null, null, null, null,
-      { "label": "CLI",       "method": "page",  "page":    "CLI"     }
+      null
     ]
   },
   {
@@ -51,19 +60,6 @@
     ]
   },
   {
-    "page": "Ped Interact",
-    "buttons": [
-      { "label": "Release",    "method": "paste", "command": "pp release" },
-      { "label": "Cite",       "method": "paste", "command": "pp cite"    },
-      { "label": "ID",         "method": "paste", "command": "pp id"      },
-      { "label": "Arrest",     "method": "paste", "command": "arrest"     },
-      { "label": "Detain",     "method": "paste", "command": "pp detain"  },
-      { "label": "Grab",       "method": "paste", "command": "grab"       },
-      { "label": "Go Here",    "method": "paste", "command": "gohere"     },
-      { "label": "In/Out Car", "method": "paste", "command": "inoutcar"   }
-    ]
-  },
-  {
     "page": "BOW",
     "buttons": [
       { "label": "BOW",            "method": "paste",   "command": "bow" },
@@ -71,7 +67,7 @@
       { "label": "Reload Plugins", "method": "console", "command": "ReloadAllPlugins" },
       { "label": "Go to Station",  "method": "paste",   "command": "tp vespucci" },
       { "label": "Force Duty",     "method": "console", "command": "forceduty" },
-      { "label": "Set Walk",       "method": "paste",   "command": "w cop2" },
+      null,
       { "label": "Set Time 0500",  "method": "paste",   "command": "morning" },
       { "label": "Spawn Sedan",    "method": "paste",   "command": "spawn police" },
       { "label": "Spawn SUV",      "method": "paste",   "command": "spawn police2" }
