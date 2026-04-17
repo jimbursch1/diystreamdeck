@@ -391,33 +391,38 @@ body::after {
 .breadcrumb {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   font-family: 'Share Tech Mono', monospace;
-  font-size: 11px;
-  letter-spacing: 0.12em;
+  font-size: 13px;
+  letter-spacing: 0.1em;
 }
 
 .breadcrumb-seg {
-  color: var(--text-dim);
+  background: var(--surface);
+  border: 1px solid var(--border-active);
+  border-radius: 4px;
+  color: var(--text);
   cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 3px;
-  transition: color 0.1s;
+  padding: 6px 14px;
+  transition: background 0.07s, border-color 0.07s;
+  user-select: none;
 }
 
-.breadcrumb-seg:hover {
-  color: var(--text);
+.breadcrumb-seg:active {
+  background: var(--surface-press);
 }
 
 .breadcrumb-seg.active {
+  background: var(--surface-press);
+  border-color: var(--accent);
   color: var(--accent);
   cursor: default;
+  box-shadow: 0 0 6px var(--accent-glow);
 }
 
 .breadcrumb-sep {
   color: var(--text-dim);
-  opacity: 0.5;
-  font-size: 10px;
+  font-size: 13px;
 }
 
 /* ── LIST PAGE ────────────────────────────────────── */
@@ -501,7 +506,7 @@ body::after {
 .list-desc {
   font-family: 'Rajdhani', sans-serif;
   font-size: 14px;
-  color: var(--text-dim);
+  color: var(--text);
   line-height: 1.3;
 }
 
@@ -517,7 +522,7 @@ body::after {
   background: var(--tab-inactive);
   border: 1px solid var(--border);
   border-radius: 3px;
-  color: var(--text-dim);
+  color: var(--text);
   font-family: 'Share Tech Mono', monospace;
   font-size: 10px;
   letter-spacing: 0.08em;
