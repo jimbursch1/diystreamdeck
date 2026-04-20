@@ -36,8 +36,9 @@
       { "label": "Right Rear Door", "method": "chat", "command": "/door 4" },
       { "label": "Trunk",           "method": "chat", "command": "/trunk"  },
       { "label": "Engine",          "method": "chat", "command": "/engine" },
-      { "label": "Spawn Sedan",     "method": "command", "command": "spawn police"  },
-      { "label": "Spawn SUV",       "method": "command", "command": "spawn police2" }
+      { "label": "Spawn Crown Vic",  "method": "command", "command": "spawn police"      },
+      { "label": "Spawn SUV",       "method": "command", "command": "spawn police3"     },
+      { "label": "Spawn Jeep",      "method": "command", "command": "spawn polterminus" }
     ]
   },
   {
@@ -71,15 +72,19 @@
     "buttons": [
       { "label": "Reload Plugins", "method": "console", "command": "ReloadAllPlugins" },
       { "label": "Force Duty",     "method": "console", "command": "forceduty" },
-      null,
-      null,
-      null,
-      null,
+      null, null, null,
+      { "label": "Mission Row",    "method": "command",   "command": "tp missionrow" },
       { "label": "BOW",            "method": "command",   "command": "bow" },
       { "label": "EOW",            "method": "command",   "command": "eow" },
-      null, null, null, null,
+      null, null, null,
+      { "label": "Vespucci",       "method": "command",   "command": "tp vespucci" },
       { "label": "Set Time 0500",  "method": "command",   "command": "morning" },
-      { "label": "Go to Station",  "method": "command",   "command": "tp vespucci" }
+      null, null, null, null,
+      { "label": "Sandy",          "method": "command",   "command": "tp sandy" },
+      null, null, null, null, null,
+      { "label": "Paleto",         "method": "command",   "command": "tp paleto" },
+      null, null, null, null, null,
+      { "label": "Rockwood",       "method": "command",   "command": "tp rockwood" }
     ]
   },
   {
@@ -144,8 +149,9 @@
     "type": "list",
     "section": "cli",
     "buttons": [
-      { "id": 22, "label": "Spawn Police", "method": "command", "command": "spawn police",   "description": "Spawn police cruiser" },
-      { "id": 23, "label": "Spawn SUV",    "method": "command", "command": "spawn police2",  "description": "Spawn police SUV" },
+      { "id": 22, "label": "Spawn Crown Vic", "method": "command", "command": "spawn police",  "description": "Spawn police cruiser (Crown Victoria)" },
+      { "id": 23, "label": "Spawn SUV",      "method": "command", "command": "spawn police3", "description": "Spawn police SUV" },
+      { "id": 131, "label": "Spawn Jeep",  "method": "command", "command": "spawn polterminus",  "description": "Spawn police Jeep (Terminus)" },
       { "id": 24, "label": "Repair",       "method": "command", "command": "repair",         "description": "Repair current vehicle" },
       { "id": 25, "label": "God Car",      "method": "command", "command": "godcar",         "description": "Toggle vehicle invincibility" },
       { "id": 26, "label": "Flip",         "method": "command", "command": "flip",           "description": "Flip vehicle upright" },
@@ -307,8 +313,9 @@
       { "id": 122, "label": "Vespucci",      "method": "command", "command": "tp vespucci",      "description": "Teleport to Vespucci PD" },
       { "id": 123, "label": "Set Walk",      "method": "command", "command": "w cop2",           "description": "Set cop walk style" },
       { "id": 124, "label": "Morning",       "method": "command", "command": "morning",          "description": "Set time to 05:00" },
-      { "id": 125, "label": "Spawn Police",  "method": "command", "command": "spawn police",     "description": "Spawn police cruiser" },
-      { "id": 126, "label": "Spawn SUV",     "method": "command", "command": "spawn police2",    "description": "Spawn police SUV" }
+      { "id": 125, "label": "Spawn Crown Vic", "method": "command", "command": "spawn police",  "description": "Spawn police cruiser (Crown Victoria)" },
+      { "id": 126, "label": "Spawn SUV",      "method": "command", "command": "spawn police3", "description": "Spawn police SUV" },
+      { "id": 132, "label": "Spawn Jeep",    "method": "command", "command": "spawn polterminus", "description": "Spawn police Jeep (Terminus)" }
     ]
   }
 ]
