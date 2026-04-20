@@ -221,7 +221,8 @@
       { "id": 65, "label": "God",      "method": "command", "command": "npc god",      "description": "Toggle NPC invincibility" },
       { "id": 66, "label": "Friendly", "method": "command", "command": "npc friendly", "description": "Set NPC relationship: friendly" },
       { "id": 67, "label": "Hostile",  "method": "command", "command": "npc hostile",  "description": "Set NPC relationship: hostile" },
-      { "id": 68, "label": "Dismiss",  "method": "command", "command": "npc dismiss",  "description": "Delete target NPC" }
+      { "id": 68, "label": "Dismiss",  "method": "command", "command": "npc dismiss",  "description": "Delete target NPC" },
+      { "id": 133, "label": "Talk",   "method": "command", "command": "npc talk",     "description": "Initiate AI director dialog with facing ped" }
     ]
   },
   {
