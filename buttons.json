@@ -18,7 +18,11 @@
       { "label": "In/Out Car", "method": "command", "command": "inoutcar",   "color": "amber" },
       { "label": "Revive",     "method": "command", "command": "revive",     "color": "amber" },
       null, null, null,
-      null, null, null, null, null,
+      { "label": "Code 4", "method": "command", "command": "status code4", "color": "blue", "group": "status" },
+      { "label": "Code 6", "method": "command", "command": "status code6", "color": "blue", "group": "status" },
+      { "label": "Clear",  "method": "command", "command": "status clear",  "color": "blue", "group": "status" },
+      { "label": "Out of Service",    "method": "command", "command": "status oos",    "color": "blue", "group": "status" },
+      null,
       null, null, null, null, null,
       null
     ]

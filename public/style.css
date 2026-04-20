@@ -198,6 +198,32 @@ body::after {
     0 0 10px rgba(212, 160, 48, 0.3);
 }
 
+.btn.group-active {
+  outline: 2px solid rgba(212, 160, 48, 0.8);
+  outline-offset: -2px;
+}
+
+.btn-color-blue {
+  background: #040d1e;
+  border-color: #1a4080;
+  color: #5090d0;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+.btn-color-blue:active {
+  background: #020810;
+  border-color: #2060b0;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(80, 144, 208, 0.3);
+}
+
+.btn-color-blue.group-active {
+  outline-color: rgba(80, 144, 208, 0.8);
+}
+
 /* ── REFERENCE PAGE ──────────────────────────────── */
 
 #panel.reference {

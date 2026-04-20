@@ -2,6 +2,7 @@ let pages = [];
 let currentPage = 0;
 const token    = new URLSearchParams(window.location.search).get('token') || '';
 const editMode = new URLSearchParams(window.location.search).has('edit');
+const activeGroups = {}; // group name → command of active button
 
 async function init() {
   if (editMode) {
@@ -78,7 +79,9 @@ function renderPage(i) {
       } else {
       const isNav = btn.method === 'page';
       const colorClass = btn.color ? ` btn-color-${btn.color}` : '';
-      el.className = 'btn' + (isNav ? ' nav-btn' : '') + colorClass + (editMode ? ' edit-mode' : '');
+      const isGroupActive = btn.group && activeGroups[btn.group] === btn.command;
+      el.className = 'btn' + (isNav ? ' nav-btn' : '') + colorClass + (isGroupActive ? ' group-active' : '') + (editMode ? ' edit-mode' : '');
+      if (btn.group) el.dataset.group = btn.group;
       el.appendChild(document.createTextNode(btn.label));
       if (editMode) {
         const badge = document.createElement('span');
@@ -308,6 +311,11 @@ async function fire(el, btn) {
     });
     const data = await res.json();
     flash(el, data.ok ? 'success' : 'error');
+    if (data.ok && btn.group) {
+      activeGroups[btn.group] = btn.command;
+      document.querySelectorAll(`[data-group="${btn.group}"]`).forEach(b => b.classList.remove('group-active'));
+      el.classList.add('group-active');
+    }
   } catch {
     flash(el, 'error');
   }
