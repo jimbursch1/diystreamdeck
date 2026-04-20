@@ -8,7 +8,7 @@
       null,
       { "label": "CAD",        "method": "command",   "command": "cad"         },
       { "label": "Screenshot", "method": "command",   "command": "pp ss"       },
-      { "label": "Cite",       "method": "command", "command": "pp cite",    "color": "amber" },
+      { "label": "Talk",       "method": "command", "command": "npc talk"                  },
       { "label": "Arrest",     "method": "command", "command": "arrest",     "color": "amber" },
       { "label": "Grab",       "method": "command", "command": "grab",       "color": "amber" },
       null,
