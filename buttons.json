@@ -83,8 +83,9 @@
       { "label": "Sandy",          "method": "command",   "command": "tp sandy" },
       null, null, null, null, null,
       { "label": "Paleto",         "method": "command",   "command": "tp paleto" },
-      null, null, null, null, null,
-      { "label": "Rockwood",       "method": "command",   "command": "tp rockwood" }
+      null, null, null, null,
+      { "label": "Rockwood",       "method": "command",   "command": "tp rockwood" },
+      { "label": "Davis",          "method": "command",   "command": "tp davis" }
     ]
   },
   {
@@ -200,7 +201,12 @@
       { "id": 127, "label": "Loc List",      "method": "command", "command": "loc list",          "description": "List all saved locations" },
       { "id": 128, "label": "Ambient Trig",  "method": "command", "command": "ambient trigger",   "description": "Trigger a random ambient encounter" },
       { "id": 129, "label": "Ambient On",    "method": "command", "command": "ambient on",        "description": "Enable ambient encounter system" },
-      { "id": 130, "label": "Ambient Off",   "method": "command", "command": "ambient off",       "description": "Disable ambient encounter system" }
+      { "id": 130, "label": "Ambient Off",   "method": "command", "command": "ambient off",       "description": "Disable ambient encounter system" },
+      { "id": 134, "label": "Zone",          "method": "command", "command": "zone",               "description": "Show current zone name and postal code" },
+      { "id": 135, "label": "TP List",       "method": "command", "command": "tp list",            "description": "List all named teleport destinations" },
+      { "id": 136, "label": "Davis LSSD",    "method": "command", "command": "tp davis",           "description": "Teleport to Davis Sheriff Station" },
+      { "id": 137, "label": "Hospital",      "method": "command", "command": "tp hospital",        "description": "Teleport to Central LS Hospital" },
+      { "id": 138, "label": "Strawberry",    "method": "command", "command": "tp strawberry",      "description": "Teleport to Strawberry neighborhood" }
     ]
   },
   {
@@ -299,6 +305,45 @@
       { "id": 114, "label": "Backup",     "method": "command", "command": "lspdfr-backup","description": "Call LSPDFR backup unit" },
       { "id": 115, "label": "Duty",       "method": "command", "command": "duty",         "description": "Go on duty" },
       { "id": 116, "label": "CAD",        "method": "command", "command": "cad",          "description": "Computer Aided Dispatch" }
+    ]
+  },
+  {
+    "page": "Locations",
+    "type": "list",
+    "section": "cli",
+    "buttons": [
+      { "id": 139, "label": "Mission Row",  "method": "command", "command": "tp missionrow",  "description": "Teleport to Mission Row LSPD" },
+      { "id": 140, "label": "Vespucci",     "method": "command", "command": "tp vespucci",    "description": "Teleport to Vespucci LSPD" },
+      { "id": 141, "label": "Davis LSSD",   "method": "command", "command": "tp davis",       "description": "Teleport to Davis Sheriff Station" },
+      { "id": 142, "label": "Sandy BCSO",   "method": "command", "command": "tp sandy",       "description": "Teleport to Sandy Shores BCSO" },
+      { "id": 143, "label": "Paleto BCSO",  "method": "command", "command": "tp paleto",      "description": "Teleport to Paleto Bay BCSO" },
+      { "id": 144, "label": "Hospital",     "method": "command", "command": "tp hospital",    "description": "Teleport to Central LS Hospital" },
+      { "id": 145, "label": "Pillbox Med",  "method": "command", "command": "tp pillbox",     "description": "Teleport to Pillbox Hill Medical" },
+      { "id": 146, "label": "Strawberry",   "method": "command", "command": "tp strawberry",  "description": "Teleport to Strawberry" },
+      { "id": 147, "label": "Chamberlain",  "method": "command", "command": "tp chamberlain", "description": "Teleport to Chamberlain Hills" },
+      { "id": 148, "label": "Rancho",       "method": "command", "command": "tp rancho",      "description": "Teleport to Rancho" },
+      { "id": 149, "label": "Grove St",     "method": "command", "command": "tp grove",       "description": "Teleport to Grove Street" },
+      { "id": 150, "label": "Cypress Flats","method": "command", "command": "tp cypress",     "description": "Teleport to Cypress Flats" },
+      { "id": 151, "label": "La Mesa",      "method": "command", "command": "tp lamesa",      "description": "Teleport to La Mesa" },
+      { "id": 152, "label": "Hawick",       "method": "command", "command": "tp hawick",      "description": "Teleport to Hawick" },
+      { "id": 153, "label": "Mirror Park",  "method": "command", "command": "tp mirrorpark",  "description": "Teleport to Mirror Park" },
+      { "id": 154, "label": "La Puerta",    "method": "command", "command": "tp lapuerta",    "description": "Teleport to La Puerta" },
+      { "id": 155, "label": "Elysian Is",   "method": "command", "command": "tp elysian",     "description": "Teleport to Elysian Island" },
+      { "id": 156, "label": "Del Perro",    "method": "command", "command": "tp delperro",    "description": "Teleport to Del Perro" },
+      { "id": 157, "label": "Morningwood",  "method": "command", "command": "tp morningwood", "description": "Teleport to Morningwood" },
+      { "id": 158, "label": "Little Seoul", "method": "command", "command": "tp littleseoul", "description": "Teleport to Little Seoul" },
+      { "id": 159, "label": "Vinewood",     "method": "command", "command": "tp vinewood",    "description": "Teleport to Vinewood" },
+      { "id": 160, "label": "Rockford",     "method": "command", "command": "tp rockford",    "description": "Teleport to Rockford Hills" },
+      { "id": 161, "label": "Airport",      "method": "command", "command": "tp airport",     "description": "Teleport to LSIA" },
+      { "id": 162, "label": "Dock",         "method": "command", "command": "tp dock",        "description": "Teleport to Terminal Dock" },
+      { "id": 163, "label": "Stadium",      "method": "command", "command": "tp stadium",     "description": "Teleport to Maze Bank Arena" },
+      { "id": 164, "label": "Observatory",  "method": "command", "command": "tp observatory", "description": "Teleport to Galileo Observatory" },
+      { "id": 165, "label": "Field",        "method": "command", "command": "tp field",       "description": "Teleport to Alamo Field" },
+      { "id": 166, "label": "Grapeseed",    "method": "command", "command": "tp grapeseed",   "description": "Teleport to Grapeseed" },
+      { "id": 167, "label": "Harmony",      "method": "command", "command": "tp harmony",     "description": "Teleport to Harmony" },
+      { "id": 168, "label": "Chumash",      "method": "command", "command": "tp chumash",     "description": "Teleport to Chumash" },
+      { "id": 169, "label": "Jail",         "method": "command", "command": "tp jail",        "description": "Teleport to Bolingbroke Penitentiary" },
+      { "id": 170, "label": "Waypoint",     "method": "command", "command": "tp waypoint",    "description": "Teleport to map waypoint" }
     ]
   },
   {
